@@ -23,6 +23,11 @@ let contacts = [
         id: 4,
         name: 'Mary Poppendieck',
         number: '39-23-6423122'
+    },
+    {
+        id: 5,
+        name: 'Test Contact',
+        number: '99-23-6423122'
     }
 ]
 
@@ -48,6 +53,14 @@ app.get('/api/contacts/:id', (request, response) => {
     } else {
         response.status(404).end()
     }
+})
+
+
+app.delete('/api/contacts/:id', (request, response) => {
+    const id = Number(request.params.id)
+    contacts = contacts.filter(c => c.id !== id)
+
+    response.status(204).end()
 })
 
 
