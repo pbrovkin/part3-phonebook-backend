@@ -3,6 +3,14 @@ const app = express()
 
 app.use(express.json())
 
+const morgan = require('morgan')
+
+morgan.token('contact', (request, response) => {
+    return JSON.stringify(request.body)
+})
+
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms :contact'))
+
 let contacts = [
     {
         id: 1,
