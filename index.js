@@ -23,11 +23,6 @@ let contacts = [
         id: 4,
         name: 'Mary Poppendieck',
         number: '39-23-6423122'
-    },
-    {
-        id: 5,
-        name: 'Test Contact',
-        number: '99-23-6423122'
     }
 ]
 
@@ -61,6 +56,32 @@ app.delete('/api/contacts/:id', (request, response) => {
     contacts = contacts.filter(c => c.id !== id)
 
     response.status(204).end()
+})
+
+
+const getRandomId = () => {
+    return Math.floor(Math.random() * (10000 - 5)) + 5
+}
+
+
+app.post('/api/contacts', (request, response) => {
+    const body = request.body
+
+    if (!body.name) {
+        return response.status(400).json({
+            error: 'content missing'
+        })
+    }
+
+    const contact = {
+        id: getRandomId(),
+        name: body.name,
+        number: body.number
+    }
+
+    contacts = contacts.concat(contact)
+
+    response.json(contact)
 })
 
 
