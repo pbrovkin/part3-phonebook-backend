@@ -76,7 +76,6 @@ const getRandomId = () => {
     return Math.floor(Math.random() * (10000 - 5)) + 5
 }
 
-
 app.post('/api/contacts', (request, response) => {
     const body = request.body
 
