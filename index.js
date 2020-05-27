@@ -52,6 +52,7 @@ app.get('/api/contacts', (req, res) => {
     res.json(contacts)
 })
 
+
 app.get('/api/contacts/:id', (request, response) => {
     const id = Number(request.params.id)
     const contact = contacts.find(c => c.id === id)
@@ -62,6 +63,7 @@ app.get('/api/contacts/:id', (request, response) => {
     }
 })
 
+
 app.delete('/api/contacts/:id', (request, response) => {
     const id = Number(request.params.id)
     contacts = contacts.filter(c => c.id !== id)
@@ -69,9 +71,11 @@ app.delete('/api/contacts/:id', (request, response) => {
     response.status(204).end()
 })
 
+
 const getRandomId = () => {
     return Math.floor(Math.random() * (10000 - 5)) + 5
 }
+
 
 app.post('/api/contacts', (request, response) => {
     const body = request.body
@@ -97,6 +101,7 @@ app.post('/api/contacts', (request, response) => {
 
     response.json(contact)
 })
+
 
 const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
