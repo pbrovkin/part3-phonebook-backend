@@ -24,16 +24,21 @@ const contact = new Contact({
     number: process.argv[4],
 })
 
-
-contact.save().then(response => {
-    console.log(`contact '${contact.name}, number: ${contact.number}' added to phonebook`)
-    mongoose.connection.close()
-})
-
-
-Contact.find({}).then(result => {
-    result.forEach(contact => {
-        console.log(contact)
+if (contact.name === undefined) {
+    Contact.find({}).then(result => {
+        console.log('phonebook:')
+        result.forEach(contact => {
+            console.log(contact.name, contact.number)
+        })
+        mongoose.connection.close()
     })
-    mongoose.connection.close()
-})
+} else {
+    contact.save().then(response => {
+        console.log(`'${contact.name}, number: ${contact.number}' added to phonebook`)
+        mongoose.connection.close()
+    })
+}
+
+
+
+
