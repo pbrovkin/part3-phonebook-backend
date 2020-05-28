@@ -1,5 +1,7 @@
+require('dotenv').config()
 const express = require('express')
 const app = express()
+const Contact = require('./models/contact')
 
 app.use(express.static('build'))
 
@@ -47,9 +49,10 @@ app.get('/info', (req, res) => {
     )
 })
 
-
-app.get('/api/contacts', (req, res) => {
-    res.json(contacts)
+app.get('/api/contacts', (request, response) => {
+    Contact.find({}).then(contacts => {
+        response.json(contacts.map(contact => contact.toJSON()))
+    })
 })
 
 
@@ -102,7 +105,7 @@ app.post('/api/contacts', (request, response) => {
 })
 
 
-const PORT = process.env.PORT || 3001
+const PORT = process.env.PORT
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`)
+    console.log(`Server running on port ${PORT}`)
 })
