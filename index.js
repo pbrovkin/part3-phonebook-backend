@@ -42,12 +42,13 @@ let contacts = [
 ]
 
 
-app.get('/info', (req, res) => {
-    res.send(
+app.get('/info', (request, response) => {
+    response.send(
         `<p>Phonebook has info for ${contacts.length} people</p>
          <p>${new Date()}</p>`
     )
 })
+
 
 app.get('/api/contacts', (request, response) => {
     Contact.find({}).then(contacts => {
@@ -57,13 +58,15 @@ app.get('/api/contacts', (request, response) => {
 
 
 app.get('/api/contacts/:id', (request, response) => {
-    const id = Number(request.params.id)
-    const contact = contacts.find(c => c.id === id)
-    if (contact) {
-        response.json(contact)
-    } else {
-        response.status(404).end()
-    }
+    Contact.findById(request.params.id)
+        .then(contact => {
+            if (contact) {
+                response.json(person.toJSON())
+            } else {
+                response.status(204).end()
+            }
+        })
+        .catch(error => next(error))
 })
 
 
@@ -87,25 +90,25 @@ app.post('/api/contacts', (request, response) => {
             error: 'name or number missing'
         })
     }
-    if (contacts.find(c => c.name === body.name)) {
+    /* if (contacts.find(c => c.name === body.name)) {
         return response.status(409).json({
             error: 'name must be unique'
         })
-    }
+    } */
 
-    const contact = {
-        id: getRandomId(),
+    const contact = new Contact({
         name: body.name,
         number: body.number
-    }
+    })
 
-    contacts = contacts.concat(contact)
-
-    response.json(contact)
+    contact.save().then(savedContact => {
+        response.json(savedContact.toJSON())
+    })
 })
-
 
 const PORT = process.env.PORT
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`)
 })
+
+
