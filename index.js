@@ -70,11 +70,12 @@ app.get('/api/contacts/:id', (request, response) => {
 })
 
 
-app.delete('/api/contacts/:id', (request, response) => {
-    const id = Number(request.params.id)
-    contacts = contacts.filter(c => c.id !== id)
-
-    response.status(204).end()
+app.delete('/api/contacts/:id', (request, response, next) => {
+    Contact.findByIdAndRemove(request.params.id)
+        .then(result => {
+            response.status(204).end()
+        })
+        .catch(error => next(error))
 })
 
 
@@ -105,6 +106,7 @@ app.post('/api/contacts', (request, response) => {
         response.json(savedContact.toJSON())
     })
 })
+
 
 const PORT = process.env.PORT
 app.listen(PORT, () => {
