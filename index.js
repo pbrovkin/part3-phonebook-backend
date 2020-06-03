@@ -90,11 +90,6 @@ app.post('/api/contacts', (request, response) => {
             error: 'name or number missing'
         })
     }
-    /* if (contacts.find(c => c.name === body.name)) {
-        return response.status(409).json({
-            error: 'name must be unique'
-        })
-    } */
 
     const contact = new Contact({
         name: body.name,
