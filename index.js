@@ -42,10 +42,12 @@ let contacts = [
 
 
 app.get('/info', (request, response) => {
-    response.send(
-        `<p>Phonebook has info for ${contacts.length} people</p>
-         <p>${new Date()}</p>`
-    )
+    Contact.count({}).then(contactsAmount => {
+        response.send(
+            `<p>Phonebook has info for ${contactsAmount} people</p>
+             <p>${new Date()}</p>`
+        )
+    })
 })
 
 
@@ -86,13 +88,13 @@ app.post('/api/contacts', (request, response, next) => {
         number: body.number
     })
 
-    contact
-        .save()
+    contact.save()
         .then(savedContact => {
             response.json(savedContact.toJSON())
         })
         .catch(error => next(error))
 })
+
 
 app.put('/api/contacts/:id', (request, response, next) => {
     const body = request.body
@@ -120,6 +122,8 @@ const errorHandler = (error, request, response, next) => {
     console.error(error.message)
     if (error.name === 'CastError' && error.kind == 'ObjectId') {
         return response.status(400).send({ error: 'malformatted id' })
+    } else if (error.name === 'ValidationError') {
+        return response.status(400).json({ error: error.message })
     }
     next(error)
 }
