@@ -78,31 +78,20 @@ app.delete('/api/contacts/:id', (request, response, next) => {
 })
 
 
-/* const getRandomId = () => {
-    return Math.floor(Math.random() * (10000 - 5)) + 5
-} */
-
-app.post('/api/contacts', (request, response) => {
+app.post('/api/contacts', (request, response, next) => {
     const body = request.body
-
-    if (!body.name || !body.number) {
-        return response.status(400).json({
-            error: 'name or number missing'
-        })
-    }
 
     const contact = new Contact({
         name: body.name,
         number: body.number
     })
 
-    contact.save()
+    contact
+        .save()
         .then(savedContact => {
             response.json(savedContact.toJSON())
         })
-        .catch(error => {
-            next(error)
-        })
+        .catch(error => next(error))
 })
 
 app.put('/api/contacts/:id', (request, response, next) => {
