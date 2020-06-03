@@ -101,9 +101,13 @@ app.post('/api/contacts', (request, response) => {
         number: body.number
     })
 
-    contact.save().then(savedContact => {
-        response.json(savedContact.toJSON())
-    })
+    contact.save()
+        .then(savedContact => {
+            response.json(savedContact.toJSON())
+        })
+        .catch(error => {
+            next(error)
+        })
 })
 
 app.put('/api/contacts/:id', (request, response, next) => {

@@ -2,6 +2,6 @@ POST http://localhost:3001/api/contacts
 Content-Type: application/json
 
 {
-    "name": "Goose Goosev",
+    "name": "Another Goosev",
     "number": "8888-6423122"
 }
