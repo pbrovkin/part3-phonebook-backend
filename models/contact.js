@@ -9,7 +9,7 @@ mongoose.connect(url, {
     useNewUrlParser: true, useUnifiedTopology: true,
     useCreateIndex: true, useFindAndModify: false
 })
-    .then(result => {
+    .then(() => {
         console.log('connected to MongoDB')
     })
     .catch((error) => {
